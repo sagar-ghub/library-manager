@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  // baseURL: "http://localhost:5000",
+  baseURL: "https://sore-rose-pike-sari.cyclic.app",
 });
 
 export const postBook = (payload) => api.post("/api/addBooks", payload);
