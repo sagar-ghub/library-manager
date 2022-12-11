@@ -90,9 +90,15 @@ input:focus{
   margin: 0px 0px -20px 20px;
 }
 
-.addBooks button{
+.addBooks button {
   background: #28C3E6;
+  border: none;
   padding: 10px 40px;
+}
+
+button:disabled{
+  background: #4dd1ee !important;
+  color: black !important;
 }
 .addBooks button:hover{
   background: #4dd1ee;
@@ -101,7 +107,7 @@ input:focus{
 
 
 .list{
-  height: 200px;
+  height: 350px;
   overflow: hidden;
   overflow-y: scroll;
 }

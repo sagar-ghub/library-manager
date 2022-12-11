@@ -8,6 +8,7 @@ const BookSchema = new Schema({
   author: String,
   subject: String,
   publishedDate: { type: Date, default: Date.now },
+  image: { type: Schema.Types.ObjectId, ref: "Image" },
 });
 
 BookSchema.index({ title: "text", author: 1, subject: 1, publishedDate: 1 });

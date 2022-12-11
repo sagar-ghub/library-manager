@@ -6,6 +6,7 @@ function useFetch(query, page) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
   const [hasMore, setHasMore] = useState(false);
 
   const sendQuery = useCallback(
@@ -16,7 +17,7 @@ function useFetch(query, page) {
 
         const { data } = await apis.getBooks(query || "", page || 1);
 
-        console.log(data.book);
+        // console.log(data.book);
         if (data.count <= page * 10) {
           // 4 10
           setHasMore(false);
@@ -38,8 +39,10 @@ function useFetch(query, page) {
           return obj.arr;
           // return [...new Set([...prev, ...data.book])];
         });
+        setCount(data.count);
         setLoading(false);
       } catch (err) {
+        setLoading(false);
         setError(err);
       }
     },
@@ -50,7 +53,7 @@ function useFetch(query, page) {
     sendQuery(query, page);
   }, [query, sendQuery, page]);
 
-  return { loading, error, list, hasMore };
+  return { loading, error, list, hasMore, count };
 }
 
 export default useFetch;

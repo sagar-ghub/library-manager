@@ -4,4 +4,6 @@ const router = express.Router();
 
 router.post("/addBooks", createController.addBooks);
 
+router.post("/addImage", createController.addImage);
+
 module.exports = router;

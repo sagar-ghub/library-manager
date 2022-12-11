@@ -1,24 +1,29 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Button, Col, PageItem, Row } from "react-bootstrap";
+import apis from "../api/api";
 import useFetch from "../hooks/useFetch";
+import BookModal from "./BookModal";
+import SpinLoader from "./SpinLoader";
 const moment = require("moment");
 export default function SearchBooks() {
   const [query, setQuery] = useState("");
   const [queryInput, setQueryInput] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const [search, setSearch] = useState(false);
-  const { loading, error, list, hasMore } = useFetch(query, pageNum, search);
+  const { loading, count, list, hasMore } = useFetch(query, pageNum, search);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalData, setModalData] = useState();
 
   const observer = useRef(); // (*)
   const lastBookElementRef = useCallback(
     // (*)
     (node) => {
-      console.log("Sa, node: ", node);
+      // console.log("Sa, node: ", node);
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          console.log("Sa, visible");
+          // console.log("Sa, visible");
           setPageNum((prev) => prev + 1);
         }
       });
@@ -28,10 +33,16 @@ export default function SearchBooks() {
   );
 
   const handleChange = (e) => {
-    // setQuery(e.target.value);
-    // setPageNum(0);
-    // setSearch(true);
     setQueryInput(e.target.value);
+  };
+
+  const handleClick = async (id) => {
+    const res = await apis.getBookById(id);
+    setModalData(res.data[0]);
+    // console.log("res", res.data[0]);
+  };
+  const firstCaps = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
   return (
     <div className="searchBooks">
@@ -59,6 +70,15 @@ export default function SearchBooks() {
         </Col>
       </Row>
       <Row>
+        <Col
+          md={8}
+          className="d-flex justify-content-end"
+          style={{ margin: "-25px 0px 15px -15px" }}
+        >
+          <small>For date use YYYY-MM-DD </small>
+        </Col>
+      </Row>
+      <Row>
         <Col md={11} className="">
           <Row className="list_heading fs-5 fw-bold">
             <Col md={3}>
@@ -81,9 +101,17 @@ export default function SearchBooks() {
               const isLastElement = list.length === i + 1;
               const date = moment(item.publishedDate).format("DD-MM-YYYY");
               return isLastElement ? (
-                <Row key={i} ref={lastBookElementRef}>
-                  <Col md={3}>{item.title} </Col>
-                  <Col md={3}>{item.author}</Col>
+                <Row
+                  key={i}
+                  ref={lastBookElementRef}
+                  onClick={() => {
+                    setModalShow(true);
+                    // setModalData(item);
+                    handleClick(item._id);
+                  }}
+                >
+                  <Col md={3}>{firstCaps(item.title)} </Col>
+                  <Col md={3}>{firstCaps(item.author)}</Col>
                   <Col md={4} className="text-truncate">
                     {item.subject}
                   </Col>
@@ -91,9 +119,16 @@ export default function SearchBooks() {
                   <Col md={2}>{date}</Col>
                 </Row>
               ) : (
-                <Row key={i}>
-                  <Col md={3}>{item.title}</Col>
-                  <Col md={3}>{item.author}</Col>
+                <Row
+                  key={i}
+                  onClick={() => {
+                    setModalShow(true);
+                    // setModalData(item);
+                    handleClick(item._id);
+                  }}
+                >
+                  <Col md={3}>{firstCaps(item.title)} </Col>
+                  <Col md={3}>{firstCaps(item.author)}</Col>
                   <Col md={4} className="text-truncate">
                     {item.subject}
                   </Col>
@@ -101,7 +136,21 @@ export default function SearchBooks() {
                 </Row>
               );
             })}
+            <div className="d-flex justify-content-center mt-3">
+              {loading && <SpinLoader />}
+            </div>
           </div>
+        </Col>
+
+        <BookModal
+          show={modalShow}
+          data={modalData}
+          onHide={() => setModalShow(false)}
+        />
+      </Row>
+      <Row>
+        <Col md={11} className="d-flex justify-content-end fs-6 mt-3 fw-bold">
+          <p>Count: {count}</p>
         </Col>
       </Row>
     </div>
