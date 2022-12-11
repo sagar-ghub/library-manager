@@ -13,7 +13,6 @@ export default function AddBooks() {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  // const [image, setImage] = useState("");
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -34,19 +33,9 @@ export default function AddBooks() {
     }
     try {
       setLoading(true);
-      // let imageRes = "";
-      // if (image) {
-      //   const formData = new FormData();
-      //   formData.append("file", image);
-      //   formData.append("upload_preset", "presetName");
-
-      //   imageRes = await apis.addImage(formData);
-      //   console.log("imageRes", imageRes?.data?._id);
-      // }
 
       const res = await apis.postBook({
         ...data,
-        //  image: imageRes?.data?._id
       });
       setData({
         title: "",
@@ -111,18 +100,6 @@ export default function AddBooks() {
             />
           </div>
         </Col>
-        {/* <Col md={12} className=" d-flex justify-content-center">
-          <div className="inputgroup">
-            <span>Image</span>
-            <br />
-            <input
-              type="file"
-              accept="image/*"
-              name="subject"
-              onChange={(e) => setImage(e.target.files[0])}
-            />
-          </div>{" "}
-        </Col> */}
       </Row>
 
       <Row className="m-5">

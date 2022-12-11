@@ -26,15 +26,6 @@ export default function BookModal(props) {
           <h4>Author: {firstCaps(props?.data?.author)}</h4>
           <p> {props?.data?.subject}</p>
         </Col>
-        {/* <Col md={3}>
-          <img
-            src={
-              `data:${props?.data?.image?.contentType}base64,` +
-              image?.toString("base64")
-            }
-            alt="book"
-          />
-        </Col> */}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

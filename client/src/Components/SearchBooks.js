@@ -18,7 +18,6 @@ export default function SearchBooks() {
   const lastBookElementRef = useCallback(
     // (*)
     (node) => {
-      // console.log("Sa, node: ", node);
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
@@ -37,8 +36,8 @@ export default function SearchBooks() {
   };
 
   const handleClick = async (id) => {
-    const res = await apis.getBookById(id);
-    setModalData(res.data[0]);
+    // const res = await apis.getBookById(id);
+    // setModalData(res.data);
     // console.log("res", res.data[0]);
   };
   const firstCaps = (string) => {
@@ -106,8 +105,8 @@ export default function SearchBooks() {
                   ref={lastBookElementRef}
                   onClick={() => {
                     setModalShow(true);
-                    // setModalData(item);
-                    handleClick(item._id);
+                    setModalData(item);
+                    // handleClick(item._id);
                   }}
                 >
                   <Col md={3}>{firstCaps(item.title)} </Col>
@@ -123,8 +122,8 @@ export default function SearchBooks() {
                   key={i}
                   onClick={() => {
                     setModalShow(true);
-                    // setModalData(item);
-                    handleClick(item._id);
+                    setModalData(item);
+                    // handleClick(item._id);
                   }}
                 >
                   <Col md={3}>{firstCaps(item.title)} </Col>
