@@ -96,6 +96,7 @@ export default function SearchBooks() {
           </Row>
 
           <div className="list fs-5 ">
+            {list.length === 0 && !loading && <p>No Records found</p>}
             {list.map((item, i) => {
               const isLastElement = list.length === i + 1;
               const date = moment(item.publishedDate).format("DD-MM-YYYY");
@@ -109,8 +110,12 @@ export default function SearchBooks() {
                     // handleClick(item._id);
                   }}
                 >
-                  <Col md={3}>{firstCaps(item.title)} </Col>
-                  <Col md={3}>{firstCaps(item.author)}</Col>
+                  <Col md={3} className="text-truncate">
+                    {firstCaps(item.title)}{" "}
+                  </Col>
+                  <Col md={3} className="text-truncate">
+                    {firstCaps(item.author)}
+                  </Col>
                   <Col md={4} className="text-truncate">
                     {item.subject}
                   </Col>

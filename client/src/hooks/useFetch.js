@@ -18,6 +18,12 @@ function useFetch(query, page) {
         const { data } = await apis.getBooks(query || "", page || 1);
 
         // console.log(data.book);
+        if (data.book.length === 0) {
+          setHasMore(false);
+          setLoading(false);
+          setList([]);
+          return;
+        }
         if (data.count <= page * 10) {
           // 4 10
           setHasMore(false);
