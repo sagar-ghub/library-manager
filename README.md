@@ -6,6 +6,8 @@ Built a frontend using reactjs
 `npm i `
 `npm start`
 
+Change   baseURL  in src/api.api.js to "http://localhost:5000"
+
 
 Build a backend using expressjs and mongodb as database
 
